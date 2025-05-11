@@ -9,7 +9,7 @@ from langchain.callbacks.manager import CallbackManagerForToolRun
 load_dotenv()
 
 class SupabaseActivitySearch(BaseTool):
-    name = "SupabaseActivitySearch"
+    name: str = "SupabaseActivitySearch"
     description = "Recherche des activités dans la base de données Supabase en fonction de la destination, l'humeur, le budget et les dates"
 
     def __init__(self):
