@@ -11,26 +11,24 @@ load_dotenv()
 class SupabaseActivitySearch(BaseTool):
     name: str = "SupabaseActivitySearch"
     description: str = "Recherche des activités dans la base de données Supabase en fonction de la destination, l'humeur, le budget et les dates"
+    supabase_url: str = os.getenv("SUPABASE_URL")
+    supabase_key: str = os.getenv("SUPABASE_KEY")
+    headers: dict = {
+        "apikey": os.getenv("SUPABASE_KEY"),
+        "Authorization": f"Bearer {os.getenv('SUPABASE_KEY')}"
+    }
+    llm: ChatOpenAI = ChatOpenAI(
+        model="mistralai/mistral-7b-instruct",
+        openai_api_base="https://openrouter.ai/api/v1",
+        openai_api_key=os.getenv("OPENROUTER_API_KEY"),
+        headers={
+            "HTTP-Referer": "https://odys.ai",
+            "X-Title": "Odys.ai Travel Planner"
+        }
+    )
 
     def __init__(self):
         super().__init__()
-        self.supabase_url = os.getenv("SUPABASE_URL")
-        self.supabase_key = os.getenv("SUPABASE_KEY")
-        self.headers = {
-            "apikey": self.supabase_key,
-            "Authorization": f"Bearer {self.supabase_key}"
-        }
-        
-        # Configuration de OpenRouter avec Mistral-7B
-        self.llm = ChatOpenAI(
-            model="mistralai/mistral-7b-instruct",
-            openai_api_base="https://openrouter.ai/api/v1",
-            openai_api_key=os.getenv("OPENROUTER_API_KEY"),
-            headers={
-                "HTTP-Referer": "https://odys.ai",
-                "X-Title": "Odys.ai Travel Planner"
-            }
-        )
 
     def _run(self, params: Dict, run_manager: CallbackManagerForToolRun = None) -> List[Dict]:
         destination = params.get("destination", "").lower()
