@@ -1,5 +1,6 @@
 import { TripRequestParser, SupabaseSearchAgent } from '../crew';
-import { Activity } from '../../../types/activity';
+// Suppression de l'import non utilisé
+// import { Activity } from '../../../types/activity';
 
 // Mock du client Supabase
 jest.mock('@supabase/supabase-js', () => ({

@@ -11,7 +11,8 @@ export async function POST(req: NextRequest) {
   try {
     const results: Activity[] = await runActivitySearch(input);
     return new Response(JSON.stringify(results), { status: 200 });
-  } catch (e: any) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Une erreur inconnue est survenue';
+    return new Response(JSON.stringify({ error: errorMessage }), { status: 500 });
   }
 } 
