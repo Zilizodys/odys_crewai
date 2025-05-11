@@ -37,7 +37,7 @@ export async function SupabaseSearchAgent(criteria: {
 }): Promise<Activity[]> {
   let query = supabase
     .from('activities')
-    .select('title, description, duration, price, link, tags')
+    .select('title, description, duration, price, booking_link, tags')
     .ilike('city', `%${criteria.city}%`);
 
   // Filtrage budget (exemple)
@@ -52,7 +52,11 @@ export async function SupabaseSearchAgent(criteria: {
 
   if (error) throw new Error(error.message);
 
-  return (data ?? []) as Activity[];
+  return (data ?? []).map((item: any) => ({
+    ...item,
+    link: item.booking_link,
+    booking_link: undefined // retire le champ technique
+  })) as Activity[];
 }
 
 // Fonction principale
