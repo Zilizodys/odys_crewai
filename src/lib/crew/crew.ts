@@ -30,6 +30,7 @@ export async function TripRequestParser(input: string): Promise<{
 }
 
 // Agent 2 : Recherche Supabase
+type DBActivity = Omit<Activity, 'link'> & { booking_link: string };
 export async function SupabaseSearchAgent(criteria: {
   city: string;
   budget?: string;
@@ -52,7 +53,7 @@ export async function SupabaseSearchAgent(criteria: {
 
   if (error) throw new Error(error.message);
 
-  return (data ?? []).map((item: any) => ({
+  return (data ?? []).map((item: DBActivity) => ({
     ...item,
     link: item.booking_link,
     booking_link: undefined // retire le champ technique
